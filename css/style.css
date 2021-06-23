@@ -5,3 +5,7 @@
 .show-display {
   display: block;
 }
+
+.correct-answer {
+  background-color: aquamarine;
+}

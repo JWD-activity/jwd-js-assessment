@@ -21,6 +21,10 @@
 const start = document.querySelector("#start");
 const quizeBlock = document.querySelector("#quizBlock");
 const btnReset = document.querySelector("#btnReset");
+const btnSubmit = document.querySelector("#btnSubmit");
+const listItem = document.getElementsByClassName("list-group-item");
+const btnRadios = document.getElementsByTagName("input");
+// const btnRadio = document.querySelector("input[type=radio]");
 
 window.addEventListener("DOMContentLoaded", () => {
   start.addEventListener("click", function (e) {
@@ -67,6 +71,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
     quizeBlock.classList.remove("show-display");
     quizeBlock.classList.add("hidden-display");
+
+    [...listItem].forEach((element) => {
+      element.classList.remove("correct-answer");
+    });
+
+    [...btnRadios].forEach((element) => {
+      element.checked = false;
+    });
   };
 
   // function to Display the quiz questions and answers from the object
@@ -76,10 +88,10 @@ window.addEventListener("DOMContentLoaded", () => {
     quizArray.map((quizItem, index) => {
       quizDisplay += `<ul class="list-group">
                    Q - ${quizItem.q}
-                    <li class="list-group-item mt-2" id="li_${index}_0"><input type="radio" name="radio${index}" id="radio_${index}_0"> ${quizItem.o[0]}</li>
-                    <li class="list-group-item" id="li_${index}_1"><input type="radio" name="radio${index}" id="radio_${index}_1"> ${quizItem.o[1]}</li>
-                    <li class="list-group-item"  id="li_${index}_2"><input type="radio" name="radio${index}" id="radio_${index}_2"> ${quizItem.o[2]}</li>
-                    <li class="list-group-item"  id="li_${index}_3"><input type="radio" name="radio${index}" id="radio_${index}_3"> ${quizItem.o[3]}</li>
+                    <li class="list-group-item mt-2" id="li_${index}_0"><input type="radio" name="radio${index}" value=0 id="radio_${index}_0"> ${quizItem.o[0]}</li>
+                    <li class="list-group-item" id="li_${index}_1"><input type="radio" name="radio${index}" value=1 id="radio_${index}_1"> ${quizItem.o[1]}</li>
+                    <li class="list-group-item"  id="li_${index}_2"><input type="radio" name="radio${index}" value=2 id="radio_${index}_2"> ${quizItem.o[2]}</li>
+                    <li class="list-group-item"  id="li_${index}_3"><input type="radio" name="radio${index}" value=3 id="radio_${index}_3"> ${quizItem.o[3]}</li>
                     </ul>
                     <div>&nbsp;</div>`;
       quizWrap.innerHTML = quizDisplay;
@@ -99,10 +111,13 @@ window.addEventListener("DOMContentLoaded", () => {
 
         if (quizItem.a == i) {
           //change background color of li element here
+          liElement.classList.add("correct-answer");
         }
 
         if (radioElement.checked) {
-          // code for task 1 goes here
+          if (quizItem.a === Number(radioElement.value)) {
+            score++;
+          }
         }
       }
     });
@@ -112,4 +127,8 @@ window.addEventListener("DOMContentLoaded", () => {
   displayQuiz();
 
   btnReset.addEventListener("click", resetQuiz);
+  btnSubmit.addEventListener("click", function (e) {
+    e.preventDefault();
+    calculateScore();
+  });
 });
