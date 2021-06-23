@@ -26,6 +26,7 @@ const btnSubmit = document.querySelector("#btnSubmit");
 const scoreDisplay = document.querySelector("#score");
 const timer = document.querySelector("#time");
 const btnRadios = document.getElementsByTagName("input");
+
 let interval;
 
 window.addEventListener("DOMContentLoaded", () => {
@@ -81,7 +82,7 @@ window.addEventListener("DOMContentLoaded", () => {
     let count = 0;
     // 1 seconds = 1000 milliseconds
     interval = window.setInterval(function () {
-      let secondsRemaining = 3300 - count;
+      let secondsRemaining = 6300 - count;
       let min = Math.floor(secondsRemaining / 100 / 60);
       let sec = zeroFill(Math.floor((secondsRemaining / 100) % 60));
       // console.log(min, sec);
@@ -109,13 +110,15 @@ window.addEventListener("DOMContentLoaded", () => {
     const quizWrap = document.querySelector("#quizWrap");
     let quizDisplay = "";
     quizArray.map((quizItem, index) => {
-      quizDisplay += `<ul class="list-group">
+      quizDisplay += ` <ul class="list-group ">
                    Q - ${quizItem.q}
-                    <li class="list-group-item mt-2" id="li_${index}_0"><input type="radio" name="radio${index}" value=0 id="radio_${index}_0"> ${quizItem.o[0]}</li>
+                   <div class="message"></div>
+                   <li class="list-group-item mt-2" id="li_${index}_0"><input type="radio" name="radio${index}" value=0 id="radio_${index}_0"> ${quizItem.o[0]}</li>
                     <li class="list-group-item" id="li_${index}_1"><input type="radio" name="radio${index}" value=1 id="radio_${index}_1"> ${quizItem.o[1]}</li>
                     <li class="list-group-item"  id="li_${index}_2"><input type="radio" name="radio${index}" value=2 id="radio_${index}_2"> ${quizItem.o[2]}</li>
                     <li class="list-group-item"  id="li_${index}_3"><input type="radio" name="radio${index}" value=3 id="radio_${index}_3"> ${quizItem.o[3]}</li>
                     </ul>
+                   
                     <div>&nbsp;</div>`;
       quizWrap.innerHTML = quizDisplay;
     });
@@ -137,8 +140,13 @@ window.addEventListener("DOMContentLoaded", () => {
           liElement.classList.add("correct-answer");
         }
         // Comparet user input answer and actual answer
-        if (radioElement.checked && quizItem.a === Number(radioElement.value)) {
-          score++;
+        if (radioElement.checked) {
+          if (quizItem.a === Number(radioElement.value)) {
+            score++;
+          } else {
+            liElement.classList.add("incorrect-answer");
+          }
+        } else {
         }
       }
       // Display score

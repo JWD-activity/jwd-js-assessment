@@ -18,6 +18,8 @@ h3 {
 ul {
   font-size: 1.3rem;
 }
+
+/* Quiz */
 .quiz-title {
   position: absolute;
   top: 50%;
@@ -32,11 +34,6 @@ ul {
   left: 20%;
 }
 
-.card {
-  border: none;
-  box-shadow: 0px 0px 20px rgb(83 88 93 / 10%);
-}
-
 .heading-primary {
   font-weight: 700;
   font-size: 2.5rem;
@@ -48,7 +45,12 @@ ul {
   font-size: 1.3rem;
   margin: 1rem 0;
 }
+.card {
+  border: none;
+  box-shadow: 0px 0px 20px rgb(83 88 93 / 10%);
+}
 
+/* Display answer */
 .hidden-display {
   display: none;
 }
@@ -58,14 +60,19 @@ ul {
 }
 
 .correct-answer {
-  background-color: #41c2c7b0;
+  background-color: #41c2c7ce;
   color: #fff;
+}
+
+.incorrect-answer {
+  color: #e46472;
 }
 
 .row.row-box {
   margin: 3rem 3rem 0 3rem;
 }
 
+/* Timer */
 .time-count {
   background-color: #252525;
   color: #fff;
