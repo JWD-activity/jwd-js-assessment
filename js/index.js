@@ -18,13 +18,15 @@
 
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
-//Selector
+// Selector
 const start = document.querySelector("#start");
 const quizeBlock = document.querySelector("#quizBlock");
 const btnReset = document.querySelector("#btnReset");
 const btnSubmit = document.querySelector("#btnSubmit");
 const scoreDisplay = document.querySelector("#score");
 const timer = document.querySelector("#time");
+const btnRadios = document.getElementsByTagName("input");
+let interval;
 
 window.addEventListener("DOMContentLoaded", () => {
   start.addEventListener("click", function (e) {
@@ -63,11 +65,13 @@ window.addEventListener("DOMContentLoaded", () => {
       a: 0,
     },
   ];
-  // founction to reset the quiz
+
+  // Founction to reset the quiz
   const resetQuiz = () => {
     location.reload();
   };
 
+  // Founction to check time
   const startTimer = () => {
     // Convert time as readable formet (e.g 00:00)
     const zeroFill = (units) => {
@@ -76,8 +80,8 @@ window.addEventListener("DOMContentLoaded", () => {
 
     let count = 0;
     // 1 seconds = 1000 milliseconds
-    const interval = window.setInterval(function () {
-      let secondsRemaining = 3100 - count;
+    interval = window.setInterval(function () {
+      let secondsRemaining = 3300 - count;
       let min = Math.floor(secondsRemaining / 100 / 60);
       let sec = zeroFill(Math.floor((secondsRemaining / 100) % 60));
       // console.log(min, sec);
@@ -86,16 +90,20 @@ window.addEventListener("DOMContentLoaded", () => {
       timer.textContent = min + ":" + sec;
       count++;
 
-      // If secondsRemaining = 0 stay as 00:00 time over
+      // If secondsRemaining = 0 stay as 00:00 time over and submit
       if (secondsRemaining === 0) {
-        clearInterval(interval);
         timer.textContent = "Time Over";
-      } else {
+        // Stop timer
+        clearInterval(interval);
+        // Display score
+        calculateScore();
+        // Set radio bttons as disabled
+        disabledRadio();
       }
     });
   };
 
-  // function to Display the quiz questions and answers from the object
+  // Function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
     startTimer();
     const quizWrap = document.querySelector("#quizWrap");
@@ -113,7 +121,7 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   };
 
-  // Calculate the score
+  // Function to calculate the score
   const calculateScore = () => {
     let score = 0;
     quizArray.map((quizItem, index) => {
@@ -128,21 +136,37 @@ window.addEventListener("DOMContentLoaded", () => {
           //change background color of li element here
           liElement.classList.add("correct-answer");
         }
-
+        // Comparet user input answer and actual answer
         if (radioElement.checked && quizItem.a === Number(radioElement.value)) {
           score++;
         }
       }
+      // Display score
       scoreDisplay.textContent = score;
     });
   };
 
-  // call the displayQuiz function
+  // Function to set disabled radio buttons
+  const disabledRadio = () => {
+    [...btnRadios].forEach((element) => {
+      console.log(element);
+      element.setAttribute("disabled", "true");
+    });
+  };
+
+  // Call the displayQuiz function
   displayQuiz();
 
+  // Reset button event handler
   btnReset.addEventListener("click", resetQuiz);
+  // Submit button event handler
   btnSubmit.addEventListener("click", function (e) {
     e.preventDefault();
+    // Stop timer
+    clearInterval(interval);
+    // Display score
     calculateScore();
+    // Set radio bttons as disabled
+    disabledRadio();
   });
 });
