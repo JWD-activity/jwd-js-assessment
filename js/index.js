@@ -18,19 +18,18 @@
 
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
+//Selector
 const start = document.querySelector("#start");
 const quizeBlock = document.querySelector("#quizBlock");
 const btnReset = document.querySelector("#btnReset");
 const btnSubmit = document.querySelector("#btnSubmit");
-const listItem = document.getElementsByClassName("list-group-item");
-const btnRadios = document.getElementsByTagName("input");
-// const btnRadio = document.querySelector("input[type=radio]");
+const scoreDisplay = document.querySelector("#score");
+const timer = document.querySelector("#time");
 
 window.addEventListener("DOMContentLoaded", () => {
   start.addEventListener("click", function (e) {
     start.classList.toggle("hidden-display");
     start.classList.remove("show-display");
-
     quizeBlock.classList.add("show-display");
     quizeBlock.classList.remove("hidden-display");
   });
@@ -66,23 +65,39 @@ window.addEventListener("DOMContentLoaded", () => {
   ];
   // founction to reset the quiz
   const resetQuiz = () => {
-    start.classList.remove("hidden-display");
-    start.classList.add("show-display");
+    location.reload();
+  };
 
-    quizeBlock.classList.remove("show-display");
-    quizeBlock.classList.add("hidden-display");
+  const startTimer = () => {
+    // Convert time as readable formet (e.g 00:00)
+    const zeroFill = (units) => {
+      return units < 10 ? "0" + units + "" : units;
+    };
 
-    [...listItem].forEach((element) => {
-      element.classList.remove("correct-answer");
-    });
+    let count = 0;
+    // 1 seconds = 1000 milliseconds
+    const interval = window.setInterval(function () {
+      let secondsRemaining = 3100 - count;
+      let min = Math.floor(secondsRemaining / 100 / 60);
+      let sec = zeroFill(Math.floor((secondsRemaining / 100) % 60));
+      // console.log(min, sec);
 
-    [...btnRadios].forEach((element) => {
-      element.checked = false;
+      // Display timer
+      timer.textContent = min + ":" + sec;
+      count++;
+
+      // If secondsRemaining = 0 stay as 00:00 time over
+      if (secondsRemaining === 0) {
+        clearInterval(interval);
+        timer.textContent = "Time Over";
+      } else {
+      }
     });
   };
 
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
+    startTimer();
     const quizWrap = document.querySelector("#quizWrap");
     let quizDisplay = "";
     quizArray.map((quizItem, index) => {
@@ -114,12 +129,11 @@ window.addEventListener("DOMContentLoaded", () => {
           liElement.classList.add("correct-answer");
         }
 
-        if (radioElement.checked) {
-          if (quizItem.a === Number(radioElement.value)) {
-            score++;
-          }
+        if (radioElement.checked && quizItem.a === Number(radioElement.value)) {
+          score++;
         }
       }
+      scoreDisplay.textContent = score;
     });
   };
 
