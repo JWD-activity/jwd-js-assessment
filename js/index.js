@@ -18,12 +18,17 @@
 
       5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
 *************************** */
+const start = document.querySelector("#start");
+const quizeBlock = document.querySelector("#quizBlock");
+const btnReset = document.querySelector("#btnReset");
 
 window.addEventListener("DOMContentLoaded", () => {
-  const start = document.querySelector("#start");
   start.addEventListener("click", function (e) {
-    document.querySelector("#quizBlock").style.display = "block";
-    start.style.display = "none";
+    start.classList.toggle("hidden-display");
+    start.classList.remove("show-display");
+
+    quizeBlock.classList.add("show-display");
+    quizeBlock.classList.remove("hidden-display");
   });
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
@@ -55,6 +60,14 @@ window.addEventListener("DOMContentLoaded", () => {
       a: 0,
     },
   ];
+  // founction to reset the quiz
+  const resetQuiz = () => {
+    start.classList.remove("hidden-display");
+    start.classList.add("show-display");
+
+    quizeBlock.classList.remove("show-display");
+    quizeBlock.classList.add("hidden-display");
+  };
 
   // function to Display the quiz questions and answers from the object
   const displayQuiz = () => {
@@ -97,4 +110,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   // call the displayQuiz function
   displayQuiz();
+
+  btnReset.addEventListener("click", resetQuiz);
 });
